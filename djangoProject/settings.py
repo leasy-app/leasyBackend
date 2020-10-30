@@ -25,7 +25,7 @@ SECRET_KEY = '7yx8#g7tw96w@g)7)$=asz$cz6(4mlml+rv=xd_9vfppvw6lg9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["calm-hamlet-80940.herokuapp.com" , "127.0.0.1" , "0.0.0.0"]
 
 
 # Application definition
