@@ -245,7 +245,7 @@ from django.conf import settings
 from django.http import HttpResponse, Http404
 
 def download(request):
-    path = request.GET.get('categorie')
+    path = 'Sunflower-field-Fargo-North-Dakota1.jpg'#request.GET.get('categorie')
     file_path = os.path.join(settings.MEDIA_ROOT, path)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
