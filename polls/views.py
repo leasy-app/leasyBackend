@@ -8,7 +8,7 @@ from django.http import HttpResponse, Http404, StreamingHttpResponse, FileRespon
 from .models import *
 from datetime import datetime
 import os
-from .models import Content
+import time
 
 
 def getCategories(request):
@@ -225,7 +225,7 @@ def getContent(request):
 
 def FileUploadView(request):
     if request.FILES:
-        file = File.objects.create(request.FILES)
+        file = File2.objects.create(request.FILES)
         return JsonResponse({'name':file.file.name}, safe=False)
     else:
         return JsonResponse({'valu':False},safe=False)

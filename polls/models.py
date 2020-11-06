@@ -14,6 +14,7 @@ class User(models.Model):
     Photo = models.CharField(max_length=25)
 
 class Post(models.Model):
+
     Id = models.BigAutoField(primary_key=True)
     Name = models.CharField(max_length=30)
     categorie = models.ForeignKey(Categories, on_delete=models.CASCADE)
@@ -22,11 +23,6 @@ class Post(models.Model):
     Create_time = models.DateTimeField(auto_now_add=True, auto_now=False)
     Summary = models.TextField()
 
-class Content(models.Model):
-    Id = models.ForeignKey(Post, on_delete=models.CASCADE, primary_key=True)
-    Content1 = models.CharField(max_length=30)
-    Content2 = models.CharField(max_length=20)
-    Main_content = models.TextField()
 
 
 class Likes(models.Model):
@@ -47,7 +43,12 @@ class ReadsPost(models.Model):
     class Meta:
         unique_together = (("user", "post"),)
 
-from django.db import models
+class Content(models.Model):
+    Id = models.ForeignKey(Post, on_delete=models.CASCADE, primary_key=True)
+    Content1 = models.CharField(max_length=30)
+    Content2 = models.CharField(max_length=20)
+    Main_content = models.TextField()
 
-class File(models.Model):
-    file = models.FileField(name='%Y-%m-%d%:%H-%M-%S',blank=False, null=False)
+class File2(models.Model):
+    file = models.FileField(blank=False, null=False)
+#name='%m-%d-%y-%H:%M:%S.%f',
