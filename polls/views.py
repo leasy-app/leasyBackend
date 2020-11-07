@@ -212,7 +212,9 @@ def getContent(request):
         if len(writer) == 0:
             return JsonResponse({"valu": False})
         post = Post.objects.filter(Writer=writer[0]).values()
-    if not (post==0) and len(post) > 0:
+    if not (post==0):
+ #       if len(post) ==0:
+  #          return JsonResponse({"valu": False})
         content = []
         for i in post:
             content.append(list(Content.objects.filter(id=i).values()))
