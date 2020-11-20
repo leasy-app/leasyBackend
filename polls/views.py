@@ -196,6 +196,8 @@ def getContent(request):
     if id:
     ##TODO post int nabashe
         post = Post.objects.filter(Id=int(id)).values()
+        #return HttpResponse("HI")
+        #return JsonResponse(list(post), safe=False)
     elif categorie and writer:
         categorie = Categories.objects.filter(Name=categorie)
         writer = User.objects.filter(Id=writer)
@@ -217,7 +219,7 @@ def getContent(request):
   #          return JsonResponse({"valu": False})
         content = []
         for i in post:
-            content.append(list(Content.objects.filter(id=i).values()))
+            content.append(list(Content.objects.filter(Id=i.get("Id")).values()))
         return JsonResponse(content, safe=False)
     else:
         return JsonResponse(list(Content.objects.all().values()), safe=False)
