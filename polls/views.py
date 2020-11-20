@@ -135,7 +135,7 @@ def AddFullPost(request):
 
     post = Post.objects.create(Name=name, categorie=categorie[0], Header_photo=photo, Writer=writer[0] , Summary = summary)
 
-    content = Post.objects.create(Id=post, Content1=content1, Content2=content2, Main_content=main_content)
+    content = Content.objects.create(Id=post, Content1=content1, Content2=content2, Main_content=main_content)
     return JsonResponse({"valu": True})
 
 def AddMark(request):
