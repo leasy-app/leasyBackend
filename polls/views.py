@@ -260,5 +260,62 @@ def download(request):
 
 
 
+def AddCourse(request):
+#?name=none&picture=NoPic&explanation=simpleCourse&posts=1-19
+    #return HttpResponse("hi")
+    name = request.GET.get('name')
+    picture = request.GET.get('picture')
+    explanation = request.GET.get('explanation')
+    post = request.GET.get('posts')
+
+    if not(name and picture and explanation and post):
+        return JsonResponse({"valu": False})
+    course = Course.objects.create(Name=name , Picture=picture , Explanation=explanation)
+    plist = []
+    for i in post.split('-'):
+        p = Post.objects.filter(Id=int(i))
+        if len(p) ==0:
+            return JsonResponse({"valu": False})
+        plist.append(p)
+    for i in plist:
+        Course_Post.objects.create(course=course,post=i[0])
+    return JsonResponse({"valu": True})
+
+def AddPost2Course(request):
+    course = request.GET.get('course')
+    post = request.GET.get('post')
+
+    if not (course and post):
+        return JsonResponse({"valu": False})
+
+    p = Post.objects.filter(Id=int(post))
+    if len(p) == 0:
+        return JsonResponse({"valu": False})
+
+    c = Course.objects.filter(Id=int(course))
+    if len(c) == 0:
+        return JsonResponse({"valu": False})
+
+    Course_Post.objects.create(course=c[0],post=p[0])
+    return JsonResponse({"valu": True})
+    
+
+def GetCourse(request):
+    course = request.GET.get('course')
+    if not (course):
+        return JsonResponse({"valu": False})
+    return JsonResponse(list(Course.objects.filter(Id=int(course)).values()),safe=False)
+
+
+def GetCoursePost(request):
+    course = request.GET.get('course')
+    if not (course):
+        return JsonResponse({"valu": False})
+    list = []
+    for i in Course_Post.objects.filter(course=int(course)).values():
+        m = i.get('post_id')
+        list.append((Post.objects.filter(Id=i.get('post_id')).values()[0]))
+    return JsonResponse(list,safe=False)
+
 
 
