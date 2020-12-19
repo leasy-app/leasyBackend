@@ -3,7 +3,10 @@ from django.urls import path , re_path
 from . import views
 
 urlpatterns = [
-
+    path('AddPost2Course/', views.AddPost2Course, name='index'),
+    path('AddCourse/', views.AddCourse, name='index'),
+    path('GetCourse/', views.GetCourse, name='index'),
+    path('GetPostCourse/', views.GetCoursePost, name='index'),
     path('Categories/', views.getCategories, name='index'),
     path('Posts/', views.getPosts, name='index'),
     path('Likes/', views.getLikes, name='index'),
