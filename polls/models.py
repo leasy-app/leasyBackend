@@ -52,3 +52,16 @@ class Content(models.Model):
 class File2(models.Model):
     file = models.FileField(blank=False, null=False)
 #name='%m-%d-%y-%H:%M:%S.%f',
+
+class Course(models.Model):
+    Id = models.BigAutoField(primary_key=True)
+    Name = models.CharField(max_length=30)
+    Picture = models.CharField(max_length=25)
+    Explanation = models.TextField()
+
+class Course_Post(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE,primary_key=True)
+
+
+
