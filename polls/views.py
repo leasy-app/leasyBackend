@@ -300,7 +300,7 @@ def AddPost2Course(request):
 def GetCourse(request):
     course = request.GET.get('course')
     if not (course):
-        return JsonResponse({"valu": False})
+        return JsonResponse(list(Course.objects.values()),safe=False)
     return JsonResponse(list(Course.objects.filter(Id=int(course)).values()),safe=False)
 
 

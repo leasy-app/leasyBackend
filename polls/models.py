@@ -62,4 +62,5 @@ class Course(models.Model):
 class Course_Post(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE,primary_key=True)
-
+    class Meta:
+        unique_together = (("course", "post"),)
