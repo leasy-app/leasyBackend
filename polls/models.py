@@ -58,13 +58,13 @@ class Course(models.Model):
     Name = models.CharField(max_length=30)
     Picture = models.CharField(max_length=25)
     Explanation = models.TextField()
-
+'''
 class Course_Post2(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     class Meta:
         unique_together = (("course", "post"),)
-
+'''
 
 class uCourse_Post(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
