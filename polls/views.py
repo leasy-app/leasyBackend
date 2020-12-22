@@ -275,7 +275,7 @@ def AddCourse(request):
             return JsonResponse({"valu": False})
         plist.append(p)
     for i in plist:
-        Course_Post.objects.create(course=course,post=i[0])
+        uCourse_Post.objects.create(course=course,post=i[0])
     return JsonResponse({"valu": True})
 
 def AddPost2Course(request):
@@ -293,7 +293,7 @@ def AddPost2Course(request):
     if len(c) == 0:
         return JsonResponse({"valu": False})
 
-    Course_Post.objects.create(course=c[0],post=p[0])
+    uCourse_Post.objects.create(course=c[0],post=p[0])
     return JsonResponse({"valu": True})
 
 
@@ -309,7 +309,7 @@ def GetCoursePost(request):
     if not (course):
         return JsonResponse({"valu": False})
     list = []
-    for i in Course_Post.objects.filter(course=int(course)).values():
+    for i in uCourse_Post.objects.filter(course=int(course)).values():
         m = i.get('post_id')
         list.append((Post.objects.filter(Id=i.get('post_id')).values()[0]))
     return JsonResponse(list,safe=False)
