@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import File2
 
-class FileSerializer(serializers.ModelSerializer):
-    class Meta:
+class MyFileSerializer(serializers.ModelSerializer):
+
+    class Meta():
         model = File2
-        fields = "__all__"
+        fields = ('file')
