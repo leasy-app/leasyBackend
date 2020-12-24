@@ -247,16 +247,17 @@ def FileUploadView0(request):
 import os
 from django.conf import settings
 from django.http import HttpResponse, Http404
+import mimetypes
 
 def download(request):
     path = request.GET.get('name')
     file_path = os.path.join(settings.MEDIA_ROOT, path)
 
-    return  JsonResponse(list(File2.objects.filter(file=path).values()),safe=False)
+    #return  JsonResponse(list(File2.objects.filter(file=path).values()),safe=False)
 
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
-            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response = HttpResponse(fh.read(), mimetypes.guess_type(path)[0])
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
