@@ -229,11 +229,13 @@ def getContent(request):
 
 def FileUploadView(request):
     if request.FILES:
-        file = File2.objects.create(request.FILES)
+        print(type(request.FILES.get('file')))
+        return JsonResponse({'valu': False}, safe=False)
+        file = File2.objects.create(request.FILES.get('file'))
         return JsonResponse({'name':file.file.name}, safe=False)
     else:
         return JsonResponse({'valu':False},safe=False)
-
+#{'file': [<InMemoryUploadedFile: 2.png ()>]}
 def FileUploadView0(request):
     if request.FILES:
         file = File2.objects.create(request.FILES)
@@ -250,10 +252,16 @@ from rest_framework import status
 from .serializers import MyFileSerializer
 
 
+'''
 class upload(APIView):
+    # MultiPartParser AND FormParser
+    # https://www.django-rest-framework.org/api-guide/parsers/#multipartparser
+    # "You will typically want to use both FormParser and MultiPartParser together in order to fully support HTML form data."
     parser_classes = (MultiPartParser, FormParser)
-
-    def post(self, request, *args, **kwargs):
+#, *args, **kwargs
+    def post(self, request):
+        print(request.data)
+        return JsonResponse({'valu': True}, safe=False)
         file_serializer = MyFileSerializer(data=request.data)
         if file_serializer.is_valid():
             file_serializer.save()
@@ -261,7 +269,36 @@ class upload(APIView):
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def get(self, request):
+        print(request.data)
+        return JsonResponse({'valu': True}, safe=False)
+        file_serializer = MyFileSerializer(data=request.data)
+        if file_serializer.is_valid():
+            file_serializer.save()
+            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+'''
 
+def upload(request):
+
+    newdoc = File3(description=request.POST.get('description'), file=request.FILES['file'])
+    newdoc.save()
+    return JsonResponse({'valu': True}, safe=False)
+
+    return JsonResponse({'valu': False}, safe=False)
+    '''
+    file_serializer = MyFileSerializer(data=request.FILES)
+    print(len(request.FILES.get("file")))
+    print(request.FILES.get("file"))
+    if file_serializer.is_valid():
+        print(1)
+        file_serializer.save()
+        return JsonResponse({'valu':True},safe=False)
+    else:
+        print(2)
+        return JsonResponse({'valu':False},safe=False)
+'''
 
 
 import os
@@ -270,14 +307,17 @@ from django.http import HttpResponse, Http404
 import mimetypes
 
 def download(request):
-    path = request.GET.get('name')
-    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    dis = request.GET.get('dis')
+    if not dis:
+        return JsonResponse({'valu': False}, safe=False)
+    pic = File3.objects.get(description=dis)
+    file_path =pic.file.path#os.path.join(settings.MEDIA_ROOT, path)
 
     #return  JsonResponse(list(File2.objects.filter(file=path).values()),safe=False)
 
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
-            response = HttpResponse(fh.read(), mimetypes.guess_type(path)[0])
+            response = HttpResponse(fh.read(), mimetypes.guess_type(pic.file.name)[0])
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404

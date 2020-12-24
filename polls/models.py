@@ -52,6 +52,13 @@ class Content(models.Model):
 class File2(models.Model):
     file = models.FileField(blank=False, null=False)
 #name='%m-%d-%y-%H:%M:%S.%f',
+class File3(models.Model):
+    file = models.FileField(blank=False, null=False)
+    description = models.CharField(max_length=255)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '{} ({})'.format(self.description, self.file)
 
 class Course(models.Model):
     Id = models.BigAutoField(primary_key=True)
