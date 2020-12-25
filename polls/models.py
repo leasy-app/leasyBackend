@@ -22,6 +22,10 @@ class User(models.Model):
     pas = models.BinaryField(default=pass_default)
     email = models.CharField(max_length=30,default=email_default)
 
+class Admin(models.Model):
+    Id = models.CharField(max_length=30,primary_key=True)
+    pas = models.BinaryField()
+
 class Post(models.Model):
 
     Id = models.BigAutoField(primary_key=True)

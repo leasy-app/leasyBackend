@@ -26,4 +26,6 @@ urlpatterns = [
     path('register', views.register, name='index'),
     path('signin', views.signin, name='index'),
     path('getUser/', views.getUser, name='index'),
+    path('addAdmin', views.addAdmin, name='index'),
+    path('AdminLogin', views.signAdmin, name='index'),
 ]

@@ -387,6 +387,21 @@ def getUser(request):
                      ,'mark':Mark.objects.filter(user=i.Id).count()})
     return JsonResponse(list , safe=False)
 
+def addAdmin(request):
+    adminpass = request.POST.get("adminpass")
+    Id = request.POST.get("Id")
+    pas = request.POST.get("pas")
+    if hashlib.sha256(adminpass.encode()).digest() == b'T\t\xf7\x0fG\xb3\x80\xedv\x12P\xba\xf8\x82\x80\xfa\xa1\xbe\xd5\xe7\x9a\xb5\xbbaoZ\xc6\xa4T+,\xe4':
+        Admin.objects.create(Id=Id, pas=hashlib.sha256(('*'+pas+'#').encode()).digest())
+
+def signAdmin(request):
+    Id = request.POST.get("Id")
+    pas = request.POST.get("pas")
+    if not(Id and pas):
+        return JsonResponse({"valu": False}, safe=False)
+    print(Admin.objects.filter(Id=Id, pas=hashlib.sha256(('*'+pas+'#').encode()).digest()).exists())
+    return JsonResponse({"valu": Admin.objects.filter(Id=Id, pas=hashlib.sha256(('*'+pas+'#').encode()).digest()).exists()}, safe=False)
+
 '''
 class User(models.Model):
     Id = models.CharField(max_length=30,primary_key=True)
