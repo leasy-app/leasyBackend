@@ -25,5 +25,5 @@ urlpatterns = [
     path('download', views.download, name='index'),
     path('register', views.register, name='index'),
     path('signin', views.signin, name='index'),
-
+    path('getUser/', views.getUser, name='index'),
 ]

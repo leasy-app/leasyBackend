@@ -366,6 +366,27 @@ def signin(request):
         return JsonResponse({"valu":User.objects.filter(email=email, pas=pas).exists()}, safe=False)
 
     return JsonResponse({"valu": False},safe=False)
+
+def getUser(request):
+    Name = request.GET.get('name')
+    email = request.GET.get('email')
+    Id = request.GET.get('username')
+    user =0
+    if Id:
+        user = User.objects.filter(Id=Id)
+    elif Name:
+        user = User.objects.filter(Name=Name)
+    elif email:
+        user = User.objects.filter(email=email)
+    else:
+        user = User.objects
+    list = []
+    for i in user.all():
+        list.append({"username":i.Id ,"name":i.Name ,"email":i.email ,'like':Likes.objects.filter(user=i.Id).count()
+                     ,'read':ReadsPost.objects.filter(user=i.Id).count()
+                     ,'mark':Mark.objects.filter(user=i.Id).count()})
+    return JsonResponse(list , safe=False)
+
 '''
 class User(models.Model):
     Id = models.CharField(max_length=30,primary_key=True)
