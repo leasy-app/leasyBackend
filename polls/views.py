@@ -382,7 +382,7 @@ def getUser(request):
         user = User.objects
     list = []
     for i in user.all():
-        list.append({"username":i.Id ,"name":i.Name ,"email":i.email ,'like':Likes.objects.filter(user=i.Id).count()
+        list.append({"username":i.Id ,"name":i.Name ,'photo':i.Photo ,"email":i.email ,'like':Likes.objects.filter(user=i.Id).count()
                      ,'read':ReadsPost.objects.filter(user=i.Id).count()
                      ,'mark':Mark.objects.filter(user=i.Id).count()})
     return JsonResponse(list , safe=False)
@@ -402,19 +402,4 @@ def signAdmin(request):
     print(Admin.objects.filter(Id=Id, pas=hashlib.sha256(('*'+pas+'#').encode()).digest()).exists())
     return JsonResponse({"valu": Admin.objects.filter(Id=Id, pas=hashlib.sha256(('*'+pas+'#').encode()).digest()).exists()}, safe=False)
 
-'''
-class User(models.Model):
-    Id = models.CharField(max_length=30,primary_key=True)
-    Name = models.CharField(max_length=20)
-    Photo = models.CharField(max_length=25)
-
-    def email_default(self):
-        return self.Name + '@email.com'
-
-    def pass_default(self):
-        return hashlib.sha256(('*' + self.Name + '#').encode()).digest()
-
-    pas = models.BinaryField(default=pass_default)
-    email = models.CharField(max_length=30,default=email_default)
-'''
 
