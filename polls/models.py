@@ -7,11 +7,20 @@ class Categories(models.Model):
     Name = models.CharField(max_length=20,primary_key=True)
     Photo = models.CharField(max_length=25)
 
-
+import hashlib
 class User(models.Model):
     Id = models.CharField(max_length=30,primary_key=True)
     Name = models.CharField(max_length=20)
     Photo = models.CharField(max_length=25)
+
+    def email_default():
+        return 'name@email.com'
+
+    def pass_default():
+        return hashlib.sha256(('*' + 'name' + '#').encode()).digest()
+
+    pas = models.BinaryField(default=pass_default)
+    email = models.CharField(max_length=30,default=email_default)
 
 class Post(models.Model):
 

@@ -23,5 +23,7 @@ urlpatterns = [
     path('upload0', views.FileUploadView0, name='index'),
     path('upload1', views.upload, name='index'),
     path('download', views.download, name='index'),
+    path('register', views.register, name='index'),
+    path('signin', views.signin, name='index'),
 
 ]

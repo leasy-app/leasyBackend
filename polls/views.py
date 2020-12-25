@@ -245,40 +245,6 @@ def FileUploadView0(request):
     else:
         return JsonResponse({'valu':False},safe=False)
 
-from rest_framework.views import APIView
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import MyFileSerializer
-
-
-'''
-class upload(APIView):
-    # MultiPartParser AND FormParser
-    # https://www.django-rest-framework.org/api-guide/parsers/#multipartparser
-    # "You will typically want to use both FormParser and MultiPartParser together in order to fully support HTML form data."
-    parser_classes = (MultiPartParser, FormParser)
-#, *args, **kwargs
-    def post(self, request):
-        print(request.data)
-        return JsonResponse({'valu': True}, safe=False)
-        file_serializer = MyFileSerializer(data=request.data)
-        if file_serializer.is_valid():
-            file_serializer.save()
-            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def get(self, request):
-        print(request.data)
-        return JsonResponse({'valu': True}, safe=False)
-        file_serializer = MyFileSerializer(data=request.data)
-        if file_serializer.is_valid():
-            file_serializer.save()
-            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-'''
 
 def upload(request):
 
@@ -287,18 +253,7 @@ def upload(request):
     return JsonResponse({'valu': True}, safe=False)
 
     return JsonResponse({'valu': False}, safe=False)
-    '''
-    file_serializer = MyFileSerializer(data=request.FILES)
-    print(len(request.FILES.get("file")))
-    print(request.FILES.get("file"))
-    if file_serializer.is_valid():
-        print(1)
-        file_serializer.save()
-        return JsonResponse({'valu':True},safe=False)
-    else:
-        print(2)
-        return JsonResponse({'valu':False},safe=False)
-'''
+
 
 
 import os
@@ -371,14 +326,59 @@ def GetCourse(request):
 def GetCoursePost(request):
     course = request.GET.get('course')
     if not (course):
-        return JsonResponse({"valu": False})
+        return JsonResponse({"valu": False},safe=False)
     list = []
     for i in uCourse_Post.objects.filter(course=int(course)).values():
         m = i.get('post_id')
         list.append((Post.objects.filter(Id=i.get('post_id')).values()[0]))
     return JsonResponse(list,safe=False)
 
+import hashlib
+def register(request):
+    Id = request.POST.get('username')
+    Name = request.POST.get('name')
+    email = request.POST.get('email')
+    pas = request.POST.get('pas')
+    photo = request.POST.get('photo')
+    if not (Id ,Name and email and pas and photo):
+        return JsonResponse({"valu": False}, safe=False)
+    newuser = User.objects.create( Id = Id ,Name=Name, Photo=photo
+                    , email=email, pas=hashlib.sha256(('*'+pas+'#').encode()).digest())
+    return JsonResponse({"valu": True}, safe=False)
 
+def signin(request):
+    Name = request.POST.get('name')
+    email = request.POST.get('email')
+    pas = request.POST.get('pas')
+    Id = request.POST.get('username')
 
+    if not pas:
+        return JsonResponse({"valu": False},safe=False)
+    pas = hashlib.sha256(('*'+pas+'#').encode()).digest()
 
+    if Id:
+        return JsonResponse({"valu":User.objects.filter(Id=Id , pas=pas).exists()},safe=False)
+
+    if Name:
+        return JsonResponse({"valu":User.objects.filter(Name=Name , pas=pas).exists()},safe=False)
+
+    if email:
+        return JsonResponse({"valu":User.objects.filter(email=email, pas=pas).exists()}, safe=False)
+
+    return JsonResponse({"valu": False},safe=False)
+'''
+class User(models.Model):
+    Id = models.CharField(max_length=30,primary_key=True)
+    Name = models.CharField(max_length=20)
+    Photo = models.CharField(max_length=25)
+
+    def email_default(self):
+        return self.Name + '@email.com'
+
+    def pass_default(self):
+        return hashlib.sha256(('*' + self.Name + '#').encode()).digest()
+
+    pas = models.BinaryField(default=pass_default)
+    email = models.CharField(max_length=30,default=email_default)
+'''
 
